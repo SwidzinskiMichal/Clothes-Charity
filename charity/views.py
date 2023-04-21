@@ -3,7 +3,10 @@ from . import models
 
 def landingpage(request):
     return render(request, "charity/index.html", {'donations_all': models.Donation.objects.all().count(),
-                                                  'organisations_all': models.Donation.objects.values('institution').distinct().count()})
+                                                  'organisations_all': models.Donation.objects.values('institution').distinct().count(),
+                                                  'institutions': models.Institution.objects.all(),
+                                                  'categories': models.Category.objects.all(),
+                                                  'institution_categories': models.Institution.categories.through.objects.all()})
 
 
 def donation(request):
