@@ -1,5 +1,7 @@
-from django.shortcuts import render
 from . import models
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 def landingpage(request):
     return render(request, "charity/index.html", {'donations_all': models.Donation.objects.all().count(),
@@ -18,4 +20,24 @@ def login(request):
 
 
 def register(request):
-    return render(request, "charity/register.html")
+    if request.method == 'POST':
+        # Extract form data
+        name = request.POST['name']
+        surname = request.POST['surname']
+        email = request.POST['email']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+
+        # Create new user
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=password,
+            first_name=name,
+            last_name=surname
+        )
+
+        # Redirect to login page
+        return redirect('/login/')
+    else:
+        return render(request, 'charity/register.html')
