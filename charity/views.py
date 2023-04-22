@@ -1,7 +1,9 @@
 from . import models
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib import messages
+from django.contrib.auth import authenticate
+from django.urls import reverse_lazy
+
 
 def landingpage(request):
     return render(request, "charity/index.html", {'donations_all': models.Donation.objects.all().count(),
@@ -16,7 +18,17 @@ def donation(request):
 
 
 def login(request):
-    return render(request, "charity/login.html")
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(email=email, password=password)
+        if user is not None:
+            login(request)
+            return redirect('')
+        else:
+            return redirect('/register/')
+    else:
+        return render(request, "charity/login.html")
 
 
 def register(request):
