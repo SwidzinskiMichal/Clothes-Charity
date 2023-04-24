@@ -5,7 +5,7 @@ app_name = 'charity'
 
 urlpatterns = [
     path('register/', views.register, name='registration'),
-    path('login/', views.login, name='login'),
+    path('login/', views.login_user, name='login'),
     path('', views.landingpage, name='landingpage'),
     path('donation/', views.donation, name='donation'),
 ]
