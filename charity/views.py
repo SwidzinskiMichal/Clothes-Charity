@@ -1,8 +1,8 @@
 from . import models
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.urls import reverse_lazy
+from django.contrib.auth import authenticate, login, logout
+
 
 
 def landingpage(request):
@@ -17,18 +17,24 @@ def donation(request):
     return render(request, "charity/form.html")
 
 
-def login(request):
+def login_user(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        user = authenticate(email=email, password=password)
+        user = authenticate(username=email, password=password)
         if user is not None:
-            login(request)
-            return redirect('')
+            print("Good")
+            login(request, user)
+            return redirect('/')
         else:
             return redirect('/register/')
     else:
         return render(request, "charity/login.html")
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('/')
 
 
 def register(request):

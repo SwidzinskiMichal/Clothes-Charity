@@ -2,13 +2,10 @@
 {% load static %}
 {% block container %}
   <body>
-    <header>
-        {% include 'partials/nav.html' %}
-    </header>
-
     <section class="login-page">
       <h2>Zaloguj się</h2>
-      <form>
+      <form method="POST" action="/login/">
+        {% csrf_token %}
         <div class="form-group">
           <input type="email" name="email" placeholder="Email" />
         </div>
