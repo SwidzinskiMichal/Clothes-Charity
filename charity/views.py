@@ -2,7 +2,7 @@ from . import models
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth.decorators import login_required
 
 
 def landingpage(request):
@@ -13,8 +13,9 @@ def landingpage(request):
                                                   'institution_categories': models.Institution.categories.through.objects.all()})
 
 
+@login_required(login_url='/login/')
 def donation(request):
-    return render(request, "charity/form.html")
+    return render(request, "charity/form.html", {'categories': models.Category.objects.all()})
 
 
 def login_user(request):
@@ -23,7 +24,6 @@ def login_user(request):
         password = request.POST['password']
         user = authenticate(username=email, password=password)
         if user is not None:
-            print("Good")
             login(request, user)
             return redirect('/')
         else:
