@@ -15,7 +15,9 @@ def landingpage(request):
 
 @login_required(login_url='/login/')
 def donation(request):
-    return render(request, "charity/form.html", {'categories': models.Category.objects.all()})
+    return render(request, "charity/form.html", {'categories': models.Category.objects.all(),
+                                                 'institutions': models.Institution.objects.all(),
+                                                 'institution_categories': models.Institution.categories.through.objects.all(),})
 
 
 def login_user(request):

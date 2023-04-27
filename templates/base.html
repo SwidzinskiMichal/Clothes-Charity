@@ -7,12 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-
   </head>
-  <header class="header">
-    {% include 'partials/nav.html' %}
-  </header>
+  <body>
+    <header class="header">
+      {% include 'partials/nav.html' %}
+    </header>
     {% block container %}
-
     {% endblock %}
+
+
+    <script src="{% static 'js/app.js' %}"></script>
+  </body>
 </html>
