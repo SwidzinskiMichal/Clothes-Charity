@@ -61,3 +61,7 @@ def register(request):
         return redirect('/login/')
     else:
         return render(request, 'charity/register.html')
+
+
+def user_profile(request):
+    return render(request, 'charity/user_profile.html', {'user': request.user,})
