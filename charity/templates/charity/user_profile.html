@@ -48,6 +48,19 @@
             padding: 20px 120px;
           }
 
+
+          .container2 {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 22px;
+          }
+
           .stats div {
             text-align: center;
           }
@@ -76,13 +89,23 @@
           <div class="stats">
             <div>
               <h2>123</h2>
-              <p>Donacje</p>
+              <p>Liczba Worków:</p>
             </div>
             <div>
               <h2>456</h2>
-              <p>Organizacje wsparte</p>
+              <p>Organizacje wsparte:</p>
             </div>
           </div>
-        </div>
+            {% for donation in donations %}
+                {% if user.id == donation.user_id %}
+                <div class="container2">
+                    <p>Liczba worków: {{ donation.quantity }}</p>
+                    <p>Dla: {{ donation.institution.name }}</p>
+                    <p>Kategorie: {% for category in donation.categories.all %}{{ category.name }}, {% endfor %}</p>
+                    <p>Odebrano: {{ donation.pick_up_time }}</p>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>a
       </body>
 {% endblock %}

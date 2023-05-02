@@ -64,4 +64,5 @@ def register(request):
 
 
 def user_profile(request):
-    return render(request, 'charity/user_profile.html', {'user': request.user,})
+    return render(request, 'charity/user_profile.html', {'user': request.user,
+                                                         'donations':models.Donation.objects.all(),})
