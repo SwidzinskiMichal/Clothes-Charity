@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block container %}
+  <h2>Edit Profile</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+    <a class="btn btn-primary" href="{% url 'charity:change_password' %}" >Zmień hasło</a>
+  </form>
+{% endblock %}
