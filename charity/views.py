@@ -1,8 +1,10 @@
 from . import models
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from .forms import EditProfileForm
 
 
 def landingpage(request):
@@ -66,3 +68,46 @@ def register(request):
 def user_profile(request):
     return render(request, 'charity/user_profile.html', {'user': request.user,
                                                          'donations':models.Donation.objects.all(),})
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST)
+        if form.is_valid():
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            if user.check_password(password):
+                user.save()
+                return redirect('/profile/')
+            else:
+                form.add_error('password', 'Incorrect password')
+    else:
+        form = EditProfileForm(initial={
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email
+        })
+    context = {'form': form}
+    return render(request, 'charity/edit_profile.html', context)
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('/profile/')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'charity/change_password.html', {'form': form})
+
+
+
+
+
