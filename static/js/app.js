@@ -255,4 +255,13 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+const categoryBtn = document.getElementById('category-btn');
+categoryBtn.addEventListener('click', function() {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+  const values = [];
+  checkboxes.forEach(function(checkbox) {
+    values.push(checkbox.value);
+  });
+  console.log(values);
+});
 
