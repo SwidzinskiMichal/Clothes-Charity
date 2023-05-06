@@ -265,3 +265,15 @@ categoryBtn.addEventListener('click', function() {
   console.log(values);
 });
 
+function markDonationTaken(donationId) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/update_donation/');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function() {
+    if (xhr.status === 200 && xhr.responseText === "success") {
+      const donationContainer = document.getElementById('donation_' + donationId);
+      donationContainer.style.backgroundColor = 'grey';
+    }
+  };
+  xhr.send('donation_id=' + donationId);
+}
