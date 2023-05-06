@@ -98,12 +98,34 @@
           </div>
             {% for donation in donations %}
                 {% if user.id == donation.user_id %}
-                <div class="container2">
-                    <p>Liczba worków: {{ donation.quantity }}</p>
-                    <p>Dla: {{ donation.institution.name }}</p>
-                    <p>Kategorie: {% for category in donation.categories.all %}{{ category.name }}, {% endfor %}</p>
-                    <p>Odebrano: {{ donation.pick_up_time }}</p>
-                </div>
+                    {% if not donation.is_taken %}
+                    <div class="container2" id="donation_{{ donation.id }}">
+                        <p>Liczba worków: {{ donation.quantity }}</p>
+                        <p>Dla: {{ donation.institution.name }}</p>
+                        <p>Kategorie: {% for category in donation.categories.all %}{{ category.name }}, {% endfor %}</p>
+                        <p>Odebrano: {{ donation.pick_up_time }}</p>
+                        <form method="post" action="{% url 'charity:take_donation' donation.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Zabrano!</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% for donation in donations %}
+                {% if user.id == donation.user_id %}
+                    {% if donation.is_taken %}
+                    <div class="container2" id="donation_{{ donation.id }}" style="opacity: 0.5;">
+                        <p>Liczba worków: {{ donation.quantity }}</p>
+                        <p>Dla: {{ donation.institution.name }}</p>
+                        <p>Kategorie: {% for category in donation.categories.all %}{{ category.name }}, {% endfor %}</p>
+                        <p>Odebrano: {{ donation.pick_up_time }}</p>
+                        <form method="post" action="{% url 'charity:return_donation' donation.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Cofnij!</button>
+                        </form>
+                    </div>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </div>a

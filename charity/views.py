@@ -1,10 +1,11 @@
 from . import models
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import EditProfileForm
+from .models import Donation
 
 
 def landingpage(request):
@@ -108,6 +109,21 @@ def change_password(request):
     return render(request, 'charity/change_password.html', {'form': form})
 
 
+def take_donation(request, donation_id):
+    donation = get_object_or_404(Donation, id=donation_id)
 
+    if request.method == 'POST':
+        donation.is_taken = True
+        donation.save()
+        return redirect('/profile/')
+
+
+def return_donation(request, donation_id):
+    donation = get_object_or_404(Donation, id=donation_id)
+
+    if request.method == 'POST':
+        donation.is_taken = False
+        donation.save()
+        return redirect('/profile/')
 
 
