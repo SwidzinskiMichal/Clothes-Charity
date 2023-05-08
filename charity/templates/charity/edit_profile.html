@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block container %}
+    <header>{% include 'partials/nav.html' %}</header>
   <h2>Edit Profile</h2>
   <form method="post" action="">
     {% csrf_token %}
